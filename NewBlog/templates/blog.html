@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <title> /BlogPage/ </title>
+  </head>
+  <body>
+    <h1> /BlogPage/ </h1>
+    
+    {% for eric in db_blog %}
+      <div class="post_entry">
+        <div class="post-subject">{{eric.subject}}</div>
+        <div class="post-content">{{eric.content}}</div>
+        <div class="post-date">{{eric.created}}</div>
+      </div>
+    {% endfor %}
+     
+  </body>
+</html>
