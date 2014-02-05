@@ -66,7 +66,7 @@ class NewPost(baseHandler):
     
     if subject and content:
       #self.write("Added New Post!")
-      p = Eric(parent = blog_key(), subject=subject, content=content)
+      p = Eric(subject=subject, content=content)
       p.put()
     
     
