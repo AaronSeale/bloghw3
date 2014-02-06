@@ -30,12 +30,12 @@ class Eric(db.Model):
   
 #!>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Delete MainPage<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<!#
 
-"""class Delete(baseHandler):
+class Delete(baseHandler):
   
   def get(self, subject="", content="", error=""):
     db_blog = db.GqlQuery("SELECT * FROM Eric ORDER BY created DESC")
     db.delete(Eric.all())
-    self.render("delete.html", subject=subject, content=content, db_blog=db_blog)"""
+    self.render("delete.html", subject=subject, content=content, db_blog=db_blog)
     
       
 
@@ -65,17 +65,42 @@ class NewPost(baseHandler):
     if blog_title and blog_entry:
       p = Eric(blog_title=blog_title, blog_entry=blog_entry)
       p.put()
-    
-    
-      self.redirect('/blog')
+      x = str(p.key().id())
+      self.redirect('/blog/' + x)  
+      
+#google creates an id for each entity in the db, to call this, you can
+#query p with key and then get its id, via the id operator. this int
+#has then been converted to a string and then stored in a variable
+  
+#The the site is redirected to the blog post, with the subsitution label
+#of the number x is"""
       
     else:
       error = "We need text in both the Subject & Content boxes please"
       #self.render("newpost.html", error = error)
       self.render_newpost(blog_title, blog_entry, error)
-         
+      
+#!>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Page Mapping<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<!#
+
+class Permalink(baseHandler):
+  def get(self, entry_id):
+    entry = Eric.get_by_id(int(entry_id))
+    
+    if not entry:
+      self.error(404)
+      return
+    
+    self.render("permalink.html", db_blog = entry)
+    
+
+
+
+
 
 #!>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Page Mapping<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<!#
 
-app = webapp2.WSGIApplication([('/blog', Blog), ('/blog/newpost', NewPost)], debug=True)
-                               #('/blog', Blog)],
+app = webapp2.WSGIApplication([('/blog', Blog),
+                               ('/blog/newpost', NewPost),
+                               ('/blog/([0-9]+)', Permalink),
+                               ('/blog/delete',Delete)], debug=True)
+                               
