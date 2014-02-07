@@ -7,7 +7,7 @@
     
     {% for eric in db_blog %}
       <div class="post_entry">
-        <div class="post-subject">{{eric.blog_title}}</div>
+        <div class="post-subject"><a href = "/blog/{{(eric.key().id())}}">{{eric.blog_title}}</a></div>
         <div class="post-content">{{eric.blog_entry}}</div>
        <div class="post-date">{{eric.created}}</div>
       </div>
